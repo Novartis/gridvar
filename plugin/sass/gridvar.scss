@@ -1,0 +1,134 @@
+/* global variables */
+$namespace: nibr-gridVar;
+$light-gray: rgb(175,175,175);
+$axis-font: "Lucida Console", Monaco, monospace;
+$label-font-size: 10px;
+
+.#{$namespace}-left {
+	float: left;
+	width: auto;
+}
+
+text.#{$namespace} {
+  	font-family: $axis-font;
+  	font-size: $label-font-size;
+}
+
+.#{$namespace}-container {
+  width: auto;
+  max-width: 85%;
+  overflow: auto;
+}
+
+.#{$namespace}-heatmap { 
+  .row {
+  	cursor: pointer; 
+	rect {
+    	stroke: white;
+    	stroke-width: 0px;
+    	opacity: 1;
+    } 
+  	.current {
+  		.clicked rect {
+    		stroke: black; 
+    	}
+  		text {
+    		font-weight: bold; 
+    	}
+		.column text {
+ 			font-weight: normal;
+ 		} 
+ 	}
+  }
+}
+
+.#{$namespace}-axis.y {
+   	shape-rendering: crispEdges;
+    path,line {
+  	    fill: none;
+  	    stroke-width: 0; 
+  	}
+}
+
+.#{$namespace}-axis.x {
+   	shape-rendering: crispEdges;
+    path, line {
+        fill: gray;
+        stroke: gray;
+    }
+}
+
+rect.#{$namespace}-bar {
+	stroke: white;
+	fill: $light-gray;
+}
+
+.#{$namespace}-xaxis {
+	path, line {
+    	fill: none;
+    	stroke: gray;
+    	stroke-width: 1;
+    	shape-rendering: crispEdges;
+	}
+	
+	text {
+		font-family: $axis-font;
+		font-size: $label-font-size;
+		fill: gray;
+		text-anchor: end;
+	}
+}
+	
+.#{$namespace}-yaxis text {
+	font-family: $axis-font;
+	font-size: $label-font-size;
+	fill: gray;
+}
+
+.#{$namespace}-x.label {
+	font-family: $axis-font;
+    font-size: $label-font-size; 
+	fill: gray;
+	text-anchor: end;
+}
+
+.#{$namespace}-legend {
+    
+    svg {
+        padding: 5px;
+    }  
+}
+
+.#{$namespace}-legend-category-label {
+        font-size: $label-font-size;
+        fill: gray;
+        font-family: $axis-font;
+}
+
+.#{$namespace}-legend-label {
+	font-family: $axis-font;
+	font-size: 10px; 
+	color: rgb(100,100,100); 
+}
+
+.#{$namespace}-legend-swatch {
+	stroke: #a9a9a9;
+	stroke-width: 1px;
+}
+
+.#{$namespace}-legend-glyph {
+	stroke: #444444;
+	stroke-width: 2;
+	fill: none;
+}
+
+.#{$namespace}-exportButtons {
+    font-size: 11px;
+    color: #6464dc;
+    margin: 0px 4px 0px 4px;
+}
+
+.#{$namespace}-exportButtons:hover {
+	text-decoration: underline;
+	color: rgb(100,100,220);
+}

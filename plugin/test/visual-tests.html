@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>GridVar Test Page</title>
+
+    <!-- gridvar css -->
+    <link rel="stylesheet" href="../gridvar.css" />
+
+    <!-- Required by gridvar -->
+    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/d3/3.3.11/d3.min.js"></script>
+    <script src="../jquery.nibrGridVar.js"></script>
+
+</head>
+
+<body>
+<h1>Is GridVar working?</h1>
+<h3>Test a very basic example. You should see:</h3>
+<ul>
+    <li>5 rows</li>
+    <li>3 columns</li>
+    <li>Legend visible: one with labels and one using the default key values</li>
+    <li>Glyphs: 1 custom glyph drawing (diagonal line), 1 canned glyph drawing (x)</li>
+    <li>1 color: yellow (if you see a white legend swatch, you've got a problem)</li>
+    <li>Click on row, column, or cell to get alert</li>
+    <li>Click on buttons to randomly reorder the rows and columns.</li>
+    <li>FileSaver.js is not included, so the "Export SVG" button should not be visible.</li>
+    <li>The server is not defined in exportOptions, so the "Export PNG" button should not be visible</li>
+    <li>Check the checkbox to change the scale of the histogram to 200% and to add a 100% tick</li>
+</ul>
+<button id='basicReorderColumns'>Reorder Columns</button>
+<button id='basicReorderRows'>Reorder Rows</button>
+<label for="autoScaleSelect">Change Histogram Scale</label>
+<input id="scaleSelect" type="checkbox" />
+<div id='gridVarBasic'>
+</div>
+
+<h3>Test the x renderer. You should see:</h3>
+<ul>
+    <li>1 row</li>
+    <li>1 column</li>
+    <li>Glyphs: big x</li>
+    <li>No colors</li>
+</ul>
+<div id='gridVar-xRenderer'>
+</div>
+
+<h3>Test the dot renderer. You should see:</h3>
+<ul>
+    <li>1 row</li>
+    <li>1 column</li>
+    <li>Glyphs: big dot</li>
+    <li>No colors</li>
+</ul>
+<div id='gridVar-dotRenderer'>
+</div>
+
+<h3>Test the minus renderer. You should see:</h3>
+<ul>
+    <li>1 row</li>
+    <li>1 column</li>
+    <li>Glyphs: big -</li>
+    <li>No colors</li>
+</ul>
+<div id='gridVar-minusRenderer'>
+</div>
+
+<h3>Test the plus renderer. You should see:</h3>
+<ul>
+    <li>1 row</li>
+    <li>1 column</li>
+    <li>Glyphs: big +</li>
+    <li>No colors</li>
+</ul>
+<div id='gridVar-plusRenderer'>
+</div>
+
+<h3>Test the circle renderer. You should see:</h3>
+<ul>
+    <li>1 row</li>
+    <li>1 column</li>
+    <li>Glyphs: big circle</li>
+    <li>No colors</li>
+</ul>
+<div id='gridVar-circleRenderer'>
+</div>
+
+<h3>Test the rectangle renderer. You should see:</h3>
+<ul>
+    <li>1 row</li>
+    <li>1 column</li>
+    <li>Glyphs: a square</li>
+    <li>No colors</li>
+</ul>
+<div id='gridVar-rectRenderer'>
+</div>
+
+</body>
+
+<script type="text/javascript">
+    function basicTest() {
+        var rows = ['Banana', 'Potato', 'Pumpkin', 'Apply', 'Cashew'],
+                columns = ['Corgi', 'Bunny', 'Panda'],
+                dataMapping = {
+                    data: [
+                        ['Banana', 'Corgi', ['y'], ['high']],
+                        ['Banana', 'Bunny', ['y'], ['high']],
+                        ['Banana', 'Panda', ['y'], ['high']],
+                        ['Potato', 'Corgi', ['n'], ['high']],
+                        ['Potato', 'Bunny', ['n'], ['high']],
+                        ['Potato', 'Panda', ['n'], ['high']],
+                        ['Pumpkin', 'Corgi', ['y'], ['high']],
+                        ['Pumpkin', 'Bunny', ['n'], ['low']],
+                        ['Pumpkin', 'Panda', ['y'], ['med']],
+                        ['Apply', 'Corgi', ['y'], ['low']],
+                        ['Apply', 'Bunny', ['n'], ['med']],
+                        ['Apply', 'Panda', ['n'], ['high']],
+                        ['Cashew', 'Corgi', ['n'], ['low']],
+                        ['Cashew', 'Bunny', ['y'], ['high']],
+                        ['Cashew', 'Panda', ['y'], ['med']]
+                    ],
+                    dataIndex: {
+                        rowKey: 0,
+                        columnKey: 1,
+                        likes: 2,
+                        effect: 3
+                    }
+                },
+                dataDisplayMapping = [{
+                    dataType: 'effect',
+                    mappings: {
+                        high: '#FEC44F',
+                        med: '#f1f1f1',
+                        //we can now mix types!  Yay!
+                        // example of supplying user function:
+                        //the d3 cell value, width of the cell and height of the cell will be passed into the function
+                        low: function(value,width,height) {return 'M0,0L' + width * 0.5 + ',' + height * 0.5;}
+                    },
+                    labelMapping: {
+                        high: 'Higher than ever before!',
+                        low: 'Low'
+                    }
+                },
+                    {
+                        dataType: 'likes',
+                        mappings: {
+                            //examples of full custom and mixed custom renderers
+                            y: {'attrs': { 'd' : function(value, width, height){return 'M0,0L' + width + ',' + height;}}, 'styles' : {'stroke' : '#0000ff', 'fill' : '#0000ff'}},
+                            n: {'attrs' : {d: 'xRenderer'}, 'styles' : {'stroke-opacity' :1}}
+                        }
+                    }],
+                histogramData = {Banana: 1, Apply: 0.75, Pumpkin: 0.88, Potato: .12, Cashew: 0.672};
+
+        // create gridvar!
+        $('#gridVarBasic').gridVar({
+            rowOrder: rows,
+            columnOrder: columns,
+            dataMapping: dataMapping,
+            dataDisplayMapping: dataDisplayMapping,
+            histogramMapping: {
+                data: histogramData,
+                label: 'Taste Level'
+            },
+            rowLabelClicked: function(event, data) { alert(data + ' clicked!'); },
+            columnLabelClicked: function(event, data) { alert(data + ' clicked!'); },
+            cellClicked: function(event, data) { alert('Cell Data: ' + data); },
+            multipleLegendLines: {
+                include: true,
+                labels: ['Strength: ', 'Likes: ']
+            }
+        });
+
+        // randomly reorder the rows
+        $('#basicReorderRows').click(function(e){
+            $('#gridVarBasic').gridVar('option', 'rowOrder', _(rows).shuffle());
+        });
+
+        // randomly reorder the columns
+        $('#basicReorderColumns').click(function(e){
+            $('#gridVarBasic').gridVar('option', 'columnOrder', _(columns).shuffle());
+        });
+
+        $('#scaleSelect').click(function() {
+            var checked = $(this).prop('checked'),
+                    histoMapping = $('#gridVarBasic').gridVar('option', 'histogramMapping');
+
+            if(checked) {
+                histoMapping.scale = 2;
+                histoMapping.totalTicks = 3;
+            }
+            else {
+                histoMapping.scale = 1;
+                histoMapping.totalTicks = 2;
+            }
+
+            $('#gridVarBasic').gridVar('option', 'histogramMapping', histoMapping);
+        });
+    }
+
+    // take a renderer and display it by itself
+    function singleGlyph(renderer, passedAttribs,passedStyles) {
+        if(_.isUndefined(passedStyles)){
+            passedStyles= {};
+        }
+        if(_.isUndefined(passedAttribs)){
+            passedAttribs= {};
+        }
+        _.extend(passedAttribs, {'d' : renderer});
+        var rows = ['Row'],
+                columns = ['Column'],
+                dataMapping = {
+                    data: [['Row', 'Column', ['glyph']]],
+                    dataIndex: {
+                        rowKey: 0,
+                        columnKey: 1,
+                        glyph: 2
+                    }
+                },
+                dataDisplayMapping = [{
+                    dataType: 'glyph',
+                    mappings: {
+                        glyph: {'attrs' : passedAttribs, 'styles' : passedStyles}
+                    }
+                }];
+
+        // select by the renderer name
+        $('#gridVar-' + renderer).gridVar({
+            cellHeight: 20,
+            cellWidth: 20,
+            rowOrder: rows,
+            columnOrder: columns,
+            dataMapping: dataMapping,
+            dataDisplayMapping: dataDisplayMapping
+        });
+    }
+
+    // kick it all off!
+    $(document).ready(function() {
+        basicTest();
+        singleGlyph('xRenderer');
+        singleGlyph('dotRenderer');
+        singleGlyph('plusRenderer');
+        singleGlyph('minusRenderer');
+        singleGlyph('rectRenderer');
+        //an example of custom built-in options
+        singleGlyph('circleRenderer',{'opacity' : 1},{'stroke' : '#aaaaff','stroke-width' : 3,'fill' : '#000000'});
+    });
+</script>
+
+</html>

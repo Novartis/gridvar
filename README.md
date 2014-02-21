@@ -503,7 +503,7 @@ Licensed under the BSD 3-Clause License.
 [nibr]: http://nibr.com
 
 <!-- assets -->
-[zipball]: https://github.com/Novartis/gridvar/releases/download/v1.0.0/jquery.nibrGridVar.zip
+[zipball]: https://github.com/Novartis/gridvar/releases/download/v1.0.0/jquery.nibrGridVar.js.zip
 
 <!-- github links -->
 [issues]: http://github.com/Novartis/gridvar/issues
